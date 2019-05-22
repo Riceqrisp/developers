@@ -26,6 +26,7 @@ namespace ExchangeRateUpdater
         {
             return Enumerable.Empty<ExchangeRate>();
         }
+
         public async Task<string> GetStringOfExchangeRates()
         {
             var client = new HttpClient();
@@ -43,15 +44,14 @@ namespace ExchangeRateUpdater
 
             return currencyList;
         }
-        public /*List<string>*/ string GetAllFoos()
+        public ExchangeRateList GetExchangeRatesList()
         {
-           var client = new HttpClient();
+            var client = new HttpClient();
 
             client.DefaultRequestHeaders.Add("exchangeRateUpdater", "test");
 
-            //List<string> currencyList = null;
             string xmlString = null;
-            XmlDocument xmlDoc = new XmlDocument();
+            
             HttpResponseMessage response = client.GetAsync("https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml").Result;
 
             if (response.IsSuccessStatusCode)
@@ -59,23 +59,30 @@ namespace ExchangeRateUpdater
                 var content = response.Content;
                 var readed = content.ReadAsStringAsync();
                 xmlString = readed.Result;
-               
-                xmlDoc.LoadXml(xmlString);
-                
-                //byte[] byteArray = Encoding.ASCII.GetBytes(xmlString);
-                //MemoryStream stream = new MemoryStream(byteArray);
-                //XmlSerializer deSerializer = new XmlSerializer(typeof(List<ExchangeRate>));
-                //object obj = deSerializer.Deserialize(stream);
-                //ExchangeRateList XmlData = (ExchangeRateList)obj;
-                //xmlString = response.Content.ReadAsAsync<string>().Result.ToString();
-                //currencyList = response.Content.ReadAsAsync<List<ExchangeRates>>().Result.ToList();
+
+                return StringtoXML(xmlString);
             }
-            return /*currencyList*/ xmlString;
+            return null;
+        }
+        public ExchangeRateList StringtoXML(string xmlString)
+        {
+            
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlString);
+
+            byte[] byteArray = Encoding.ASCII.GetBytes(xmlString);
+            MemoryStream stream = new MemoryStream(byteArray);
+
+            XmlSerializer deSerializer = new XmlSerializer(typeof(List<ExchangeRate>));
+            object obj = deSerializer.Deserialize(stream);
+
+            ExchangeRateList XmlData = (ExchangeRateList)obj;
+
+            return XmlData;
         }
     }
 }
 
-//Just a quick note for the task for mews. Be consistent (same naming convention through whole solution, var/explicit variables), 
-//make it selfcommenting and use comments when necessary, if there is some code written already like helper classes, try to use them
+
 
     

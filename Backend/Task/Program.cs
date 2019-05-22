@@ -25,16 +25,14 @@ namespace ExchangeRateUpdater
             {
                 var provider = new ExchangeRateProvider();
                 var rates = provider.GetExchangeRates(currencies);
-                var ratesAlternative = provider.GetAllFoos();
-
-                //var ratesStringTest = provider.GetStringOfExchangeRates();
-
-                Console.WriteLine(ratesAlternative);
+                //var ratesTest = provider.GetExchangeRatesList();
+                var ratesStringTest = provider.GetStringOfExchangeRates();
+                Console.WriteLine(ratesStringTest);
 
                 Console.WriteLine($"Successfully retrieved {rates.Count()} exchange rates:");
                 foreach (var rate in rates)
                 {
-                    //Console.WriteLine(ratesAlternative.ToString());
+                    
                     Console.WriteLine(rate.ToString());
    
                 }

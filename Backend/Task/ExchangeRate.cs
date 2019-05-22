@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace ExchangeRateUpdater
 {
+    [XmlRoot("kurzy")]
     public class ExchangeRateList
     {
-        [System.Xml.Serialization.XmlElement("radek")]
+        [XmlElement("tabulka")]
         public List<ExchangeRate> one = new List<ExchangeRate>();
     }
+
     
     public class ExchangeRate
     {
@@ -23,12 +26,12 @@ namespace ExchangeRateUpdater
         {
 
         }
-        [System.Xml.Serialization.XmlAttribute("kod")]
+        [XmlAttribute("kod")]
         public Currency SourceCurrency { get; }
 
         public Currency TargetCurrency { get; }
 
-        //[System.Xml.Serialization.XmlElement("kurz")]
+        [XmlAttribute("kurz")]
         public decimal Value { get; }
 
         public override string ToString()

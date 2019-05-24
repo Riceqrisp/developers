@@ -33,16 +33,16 @@ namespace ExchangeRateUpdater
 
             client.DefaultRequestHeaders.Add("exchangeRateUpdater", "test");
 
-            string currencyList = null;
+            string currencies = null;
 
             HttpResponseMessage currencyResponse = await client.GetAsync("https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml");
 
             if (currencyResponse.IsSuccessStatusCode)
             {
-                currencyList = await currencyResponse.Content.ReadAsAsync<string>();
+                currencies = await currencyResponse.Content.ReadAsStringAsync();
             }
 
-            return currencyList;
+            return currencies;
         }
         public ExchangeRateList GetExchangeRatesList()
         {

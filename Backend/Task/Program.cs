@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ExchangeRateUpdater
 {
@@ -26,15 +27,14 @@ namespace ExchangeRateUpdater
                 var provider = new ExchangeRateProvider();
                 var rates = provider.GetExchangeRates(currencies);
                 //var ratesTest = provider.GetExchangeRatesList();
-                var ratesStringTest = provider.GetStringOfExchangeRates();
+                var ratesStringTest = provider.GetStringOfExchangeRates().Result;
                 Console.WriteLine(ratesStringTest);
+               
 
                 Console.WriteLine($"Successfully retrieved {rates.Count()} exchange rates:");
                 foreach (var rate in rates)
                 {
-                    
                     Console.WriteLine(rate.ToString());
-   
                 }
             }
             catch (Exception e)

@@ -72,7 +72,6 @@ namespace ExchangeRateUpdater
 
             byte[] byteArray = Encoding.ASCII.GetBytes(xmlString);
             MemoryStream stream = new MemoryStream(byteArray);
-
             XmlSerializer deSerializer = new XmlSerializer(typeof(List<ExchangeRate>));
             object obj = deSerializer.Deserialize(stream);
 

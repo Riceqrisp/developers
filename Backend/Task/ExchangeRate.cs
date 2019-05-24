@@ -11,10 +11,8 @@ namespace ExchangeRateUpdater
         public List<ExchangeRate> one = new List<ExchangeRate>();
     }
 
-    
     public class ExchangeRate
     {
-        
 
         public ExchangeRate(Currency sourceCurrency, Currency targetCurrency, decimal value)
         {

@@ -24,6 +24,9 @@ namespace ExchangeRateUpdater
         /// </summary>
         public IEnumerable<ExchangeRate> GetExchangeRates(IEnumerable<Currency> currencies)
         {
+            for (int i = 0; i < currencies.Count(); i++)
+            {
+            }
             return Enumerable.Empty<ExchangeRate>();
         }
 
@@ -35,7 +38,7 @@ namespace ExchangeRateUpdater
 
             string currencies = null;
 
-            HttpResponseMessage currencyResponse = await client.GetAsync("https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml");
+            HttpResponseMessage currencyResponse = await client.GetAsync("https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt");
 
             if (currencyResponse.IsSuccessStatusCode)
             {
@@ -44,44 +47,62 @@ namespace ExchangeRateUpdater
 
             return currencies;
         }
-        public ExchangeRateList GetExchangeRatesList()
-        {
-            var client = new HttpClient();
-
-            client.DefaultRequestHeaders.Add("exchangeRateUpdater", "test");
-
-            string xmlString = null;
-            
-            HttpResponseMessage response = client.GetAsync("https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml").Result;
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content = response.Content;
-                var readed = content.ReadAsStringAsync();
-                xmlString = readed.Result;
-
-                return StringtoXML(xmlString);
-            }
-            return null;
-        }
         public ExchangeRateList StringtoXML(string xmlString)
         {
-            
+            xmlString = xmlString.Replace("\n", string.Empty);
             XmlDocument xmlDoc = new XmlDocument();
+
             xmlDoc.LoadXml(xmlString);
 
             byte[] byteArray = Encoding.ASCII.GetBytes(xmlString);
             MemoryStream stream = new MemoryStream(byteArray);
             XmlSerializer deSerializer = new XmlSerializer(typeof(List<ExchangeRate>));
+            var streamWriter = new StreamWriter(stream, Encoding.UTF8);
+
             object obj = deSerializer.Deserialize(stream);
 
             ExchangeRateList XmlData = (ExchangeRateList)obj;
 
             return XmlData;
         }
+        public List<string> ResponseToList(string responseString)
+        {
+
+            string[] lines = responseString.Split(Environment.NewLine.ToCharArray());
+            List<string> splittedList = new List<string>();
+            foreach (var line in lines)
+            {
+               string [] splitPipe = line.Split('|');
+                splittedList.Add(splitPipe[3]);
+                splittedList.Add(splitPipe[4]);
+            }
+           return null;
+        }
     }
 }
 
 
+// Non-awaitable method delete before commit!
+
+//        public ExchangeRateList GetExchangeRatesText()
+//        {
+//            var client = new HttpClient();
+
+//client.DefaultRequestHeaders.Add("exchangeRateUpdater", "test");
+
+//            string xmlString = null;
+
+//HttpResponseMessage response = client.GetAsync("https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml").Result;
+
+//            if (response.IsSuccessStatusCode)
+//            {
+//                var content = response.Content;
+//var readed = content.ReadAsStringAsync();
+//xmlString = readed.Result;
+
+//                return StringtoXML(xmlString);
+//            }
+//            return null;
+//        }
 
     

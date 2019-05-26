@@ -4,22 +4,23 @@ using System.Xml.Serialization;
 
 namespace ExchangeRateUpdater
 {
-    [XmlRoot("kurzy")]
+    [Serializable, XmlRoot("kurzy")]
     public class ExchangeRateList
     {
         [XmlElement("tabulka")]
-        public List<ExchangeRate> one = new List<ExchangeRate>();
+        public List<ExchangeRate> testList = new List<ExchangeRate>();
     }
-
+    [XmlType("kurzy")]
     public class ExchangeRate
     {
-
+        
         public ExchangeRate(Currency sourceCurrency, Currency targetCurrency, decimal value)
         {
             SourceCurrency = sourceCurrency;
             TargetCurrency = targetCurrency;
             Value = value;
         }
+        
         public ExchangeRate()
         {
 

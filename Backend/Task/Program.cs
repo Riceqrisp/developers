@@ -28,13 +28,15 @@ namespace ExchangeRateUpdater
                 var rates = provider.GetExchangeRates(currencies);
                 //var ratesTest = provider.GetExchangeRatesList();
                 var ratesStringTest = provider.GetStringOfExchangeRates().Result;
-                Console.WriteLine(ratesStringTest);
+                provider.ResponseToList(ratesStringTest);
                
 
-                Console.WriteLine($"Successfully retrieved {rates.Count()} exchange rates:");
-                foreach (var rate in rates)
+                Console.WriteLine($"Successfully retrieved {ratesStringTest.Count()} exchange rates:");
+                foreach (var rate in ratesStringTest)
                 {
+
                     Console.WriteLine(rate.ToString());
+
                 }
             }
             catch (Exception e)

@@ -78,12 +78,13 @@ namespace ExchangeRateUpdater
             foreach (var line in lines)
             {
                 string[] splitPipe = line.Split('|');
-                
-                if (splitPipe.
-                    ToList().
-                    Intersect(tempList).
-                    Any()) {
-                listOfRates.Add(new ExchangeRate(new Currency(splitPipe[3]), new Currency("CZK"), Int32.Parse(splitPipe[4])));
+
+                if (splitPipe.ToList().Intersect(tempList).Any())
+                {
+                    decimal decimalVal;
+                    string value = splitPipe[4];
+                    decimalVal = Convert.ToDecimal(value);
+                    listOfRates.Add(new ExchangeRate(new Currency(splitPipe[3]), new Currency("CZK"), decimalVal));
                 }
 
             }
@@ -91,29 +92,3 @@ namespace ExchangeRateUpdater
         }
     }
 }
-
-
-// Non-awaitable method delete before commit!
-
-//        public ExchangeRateList GetExchangeRatesText()
-//        {
-//            var client = new HttpClient();
-
-//client.DefaultRequestHeaders.Add("exchangeRateUpdater", "test");
-
-//            string xmlString = null;
-
-//HttpResponseMessage response = client.GetAsync("https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml").Result;
-
-//            if (response.IsSuccessStatusCode)
-//            {
-//                var content = response.Content;
-//var readed = content.ReadAsStringAsync();
-//xmlString = readed.Result;
-
-//                return StringtoXML(xmlString);
-//            }
-//            return null;
-//        }
-
-    

@@ -79,7 +79,10 @@ namespace ExchangeRateUpdater
             {
                 string[] splitPipe = line.Split('|');
                 
-                if (splitPipe.ToList().Intersect(tempList).Any()) { 
+                if (splitPipe.
+                    ToList().
+                    Intersect(tempList).
+                    Any()) {
                 listOfRates.Add(new ExchangeRate(new Currency(splitPipe[3]), new Currency("CZK"), Int32.Parse(splitPipe[4])));
                 }
 

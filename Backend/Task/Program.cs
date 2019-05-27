@@ -28,11 +28,11 @@ namespace ExchangeRateUpdater
                 var rates = provider.GetExchangeRates(currencies);
                 //var ratesTest = provider.GetExchangeRatesList();
                 var ratesStringTest = provider.GetStringOfExchangeRates().Result;
-                provider.ResponseToList(ratesStringTest);
-               
+                var ratesTest = provider.ResponseToList(ratesStringTest, currencies.ToList());
+                
 
-                Console.WriteLine($"Successfully retrieved {ratesStringTest.Count()} exchange rates:");
-                foreach (var rate in ratesStringTest)
+                Console.WriteLine($"Successfully retrieved {ratesTest.Count()} exchange rates:");
+                foreach (var rate in ratesTest)
                 {
 
                     Console.WriteLine(rate.ToString());

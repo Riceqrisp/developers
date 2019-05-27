@@ -24,9 +24,7 @@ namespace ExchangeRateUpdater
         /// </summary>
         public IEnumerable<ExchangeRate> GetExchangeRates(IEnumerable<Currency> currencies)
         {
-            for (int i = 0; i < currencies.Count(); i++)
-            {
-            }
+
             return Enumerable.Empty<ExchangeRate>();
         }
 
@@ -65,18 +63,28 @@ namespace ExchangeRateUpdater
 
             return XmlData;
         }
-        public List<string> ResponseToList(string responseString)
+        public List<ExchangeRate> ResponseToList(string responseString,List<Currency> currencies)
         {
+            List<ExchangeRate> listOfRates = new List<ExchangeRate>();
+            List<string> tempList = new List<string>();
 
             string[] lines = responseString.Split(Environment.NewLine.ToCharArray());
-            List<string> splittedList = new List<string>();
+
+            foreach (var item in currencies)
+            {
+                tempList.Add(item.ToString());
+            }
+            
             foreach (var line in lines)
             {
-               string [] splitPipe = line.Split('|');
-                splittedList.Add(splitPipe[3]);
-                splittedList.Add(splitPipe[4]);
+                string[] splitPipe = line.Split('|');
+                
+                if (splitPipe.ToList().Intersect(tempList).Any()) { 
+                listOfRates.Add(new ExchangeRate(new Currency(splitPipe[3]), new Currency("CZK"), Int32.Parse(splitPipe[4])));
+                }
+
             }
-           return null;
+           return listOfRates;
         }
     }
 }

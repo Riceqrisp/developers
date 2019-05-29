@@ -63,10 +63,12 @@ namespace ExchangeRateUpdater
 
             return XmlData;
         }
-        public List<ExchangeRate> ResponseToList(string responseString,List<Currency> currencies)
+        public List<ExchangeRate> ResponseToList(List<Currency> currencies)
         {
+
             List<ExchangeRate> listOfRates = new List<ExchangeRate>();
             List<string> tempList = new List<string>();
+            string responseString = GetStringOfExchangeRates().Result;
 
             string[] lines = responseString.Split(Environment.NewLine.ToCharArray());
 

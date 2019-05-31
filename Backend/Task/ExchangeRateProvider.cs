@@ -24,6 +24,15 @@ namespace ExchangeRateUpdater
         /// </summary>
         public IEnumerable<ExchangeRate> GetExchangeRates(IEnumerable<Currency> currencies)
         {
+            var xmlResponse = GetUrl();
+            List<string> tempList1 = new List<string>();
+            var tempList  = xmlResponse.Result.tabulka.radek;
+            
+
+            //if (exchangeRateList.Intersect(currencies.ToList()).Any())
+            //{
+
+            //}
 
             return Enumerable.Empty<ExchangeRate>();
         }
@@ -44,6 +53,20 @@ namespace ExchangeRateUpdater
             }
 
             return currencies;
+        }
+        public async Task<kurzy> GetUrl()
+        {
+            var _url = "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml";
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(_url);
+                var stream = await response.Content.ReadAsStreamAsync();
+
+                XmlSerializer serializer = new XmlSerializer(typeof(kurzy));
+                var source = (kurzy)serializer.Deserialize(stream);
+
+                return source;
+            }
         }
         public ExchangeRateList StringtoXML(string xmlString)
         {
@@ -92,5 +115,208 @@ namespace ExchangeRateUpdater
             }
            return listOfRates;
         }
+
+        // NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
+        /// <remarks/>
+        [System.SerializableAttribute()]
+        [System.ComponentModel.DesignerCategoryAttribute("code")]
+        [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+        [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+        public partial class kurzy
+        {
+
+            private kurzyTabulka tabulkaField;
+
+            private string bankaField;
+
+            private string datumField;
+
+            private byte poradiField;
+
+            /// <remarks/>
+            public kurzyTabulka tabulka
+            {
+                get
+                {
+                    return this.tabulkaField;
+                }
+                set
+                {
+                    this.tabulkaField = value;
+                }
+            }
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public string banka
+            {
+                get
+                {
+                    return this.bankaField;
+                }
+                set
+                {
+                    this.bankaField = value;
+                }
+            }
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public string datum
+            {
+                get
+                {
+                    return this.datumField;
+                }
+                set
+                {
+                    this.datumField = value;
+                }
+            }
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public byte poradi
+            {
+                get
+                {
+                    return this.poradiField;
+                }
+                set
+                {
+                    this.poradiField = value;
+                }
+            }
+        }
+
+        /// <remarks/>
+        [System.SerializableAttribute()]
+        [System.ComponentModel.DesignerCategoryAttribute("code")]
+        [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+        public partial class kurzyTabulka
+        {
+
+            private kurzyTabulkaRadek[] radekField;
+
+            private string typField;
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlElementAttribute("radek")]
+            public kurzyTabulkaRadek[] radek
+            {
+                get
+                {
+                    return this.radekField;
+                }
+                set
+                {
+                    this.radekField = value;
+                }
+            }
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public string typ
+            {
+                get
+                {
+                    return this.typField;
+                }
+                set
+                {
+                    this.typField = value;
+                }
+            }
+        }
+
+        /// <remarks/>
+        [System.SerializableAttribute()]
+        [System.ComponentModel.DesignerCategoryAttribute("code")]
+        [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+        public partial class kurzyTabulkaRadek
+        {
+
+            private string kodField;
+
+            private string menaField;
+
+            private ushort mnozstviField;
+
+            private string kurzField;
+
+            private string zemeField;
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public string kod
+            {
+                get
+                {
+                    return this.kodField;
+                }
+                set
+                {
+                    this.kodField = value;
+                }
+            }
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public string mena
+            {
+                get
+                {
+                    return this.menaField;
+                }
+                set
+                {
+                    this.menaField = value;
+                }
+            }
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public ushort mnozstvi
+            {
+                get
+                {
+                    return this.mnozstviField;
+                }
+                set
+                {
+                    this.mnozstviField = value;
+                }
+            }
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public string kurz
+            {
+                get
+                {
+                    return this.kurzField;
+                }
+                set
+                {
+                    this.kurzField = value;
+                }
+            }
+
+            /// <remarks/>
+            [System.Xml.Serialization.XmlAttributeAttribute()]
+            public string zeme
+            {
+                get
+                {
+                    return this.zemeField;
+                }
+                set
+                {
+                    this.zemeField = value;
+                }
+            }
+        }
+
+
     }
 }

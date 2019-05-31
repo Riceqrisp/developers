@@ -26,8 +26,7 @@ namespace ExchangeRateUpdater
             {
                 var provider = new ExchangeRateProvider();
                 var rates = provider.GetExchangeRates(currencies);
-
-
+                
                 var ratesTest = provider.ResponseToList(currencies.ToList());
                 
 

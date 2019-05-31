@@ -30,8 +30,8 @@ namespace ExchangeRateUpdater
                 var ratesTest = provider.ResponseToList(currencies.ToList());
                 
 
-                Console.WriteLine($"Successfully retrieved {ratesTest.Count()} exchange rates:");
-                foreach (var rate in ratesTest)
+                Console.WriteLine($"Successfully retrieved {rates.Count()} exchange rates:");
+                foreach (var rate in rates)
                 {
 
                     Console.WriteLine(rate.ToString());

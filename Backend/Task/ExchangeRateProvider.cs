@@ -25,16 +25,27 @@ namespace ExchangeRateUpdater
         public IEnumerable<ExchangeRate> GetExchangeRates(IEnumerable<Currency> currencies)
         {
             var xmlResponse = GetUrl();
-            List<string> tempList1 = new List<string>();
+            List<ExchangeRate> exchangeRateTempList = new List<ExchangeRate>();
             var tempList  = xmlResponse.Result.tabulka.radek;
-            
 
-            //if (exchangeRateList.Intersect(currencies.ToList()).Any())
-            //{
+            foreach (var item in tempList)
+            {
+                decimal decimalVal;
+                decimalVal = Convert.ToDecimal(item.kurz);
+                exchangeRateTempList.Add(new ExchangeRate(new Currency(item.kod), new Currency("CZK"), decimalVal));
+            }
 
-            //}
+            return CheckInResponseIfTheyBelongToCurrenciesGiven(currencies, exchangeRateTempList);
+        }
 
-            return Enumerable.Empty<ExchangeRate>();
+        public IEnumerable<ExchangeRate> CheckInResponseIfTheyBelongToCurrenciesGiven(IEnumerable<Currency> currencies, IEnumerable<ExchangeRate> exchangeRates)
+        {
+            List<ExchangeRate> tempExchangeRateList = exchangeRates.ToList();
+            List<Currency> tempListOfCurrency = currencies.ToList();
+
+            var query = tempExchangeRateList.Where(sourceCurrency => currencies.Any(currency => currency.Code.Equals(sourceCurrency)));
+
+            return query;
         }
 
         public async Task<string> GetStringOfExchangeRates()
@@ -68,27 +79,8 @@ namespace ExchangeRateUpdater
                 return source;
             }
         }
-        public ExchangeRateList StringtoXML(string xmlString)
-        {
-            xmlString = xmlString.Replace("\n", string.Empty);
-            XmlDocument xmlDoc = new XmlDocument();
-
-            xmlDoc.LoadXml(xmlString);
-
-            byte[] byteArray = Encoding.ASCII.GetBytes(xmlString);
-            MemoryStream stream = new MemoryStream(byteArray);
-            XmlSerializer deSerializer = new XmlSerializer(typeof(List<ExchangeRate>));
-            var streamWriter = new StreamWriter(stream, Encoding.UTF8);
-
-            object obj = deSerializer.Deserialize(stream);
-
-            ExchangeRateList XmlData = (ExchangeRateList)obj;
-
-            return XmlData;
-        }
         public List<ExchangeRate> ResponseToList(List<Currency> currencies)
         {
-
             List<ExchangeRate> listOfRates = new List<ExchangeRate>();
             List<string> tempList = new List<string>();
             string responseString = GetStringOfExchangeRates().Result;
